@@ -1,5 +1,6 @@
 package com.example.springmysqljparest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Collection;
@@ -25,6 +26,7 @@ public class Llibre {
     @Basic
     @Column(name = "autor")
     private String autor;
+    @JsonIgnore
     @OneToMany(mappedBy = "llibreByIsbn")
     private Collection<Prestec> prestecsByIsbn;
 
@@ -91,6 +93,19 @@ public class Llibre {
 
     public Collection<Prestec> getPrestecsByIsbn() {
         return prestecsByIsbn;
+    }
+
+    public Llibre() {
+
+    }
+
+    public Llibre(String isbn, String titol, String categoria, Double preu, String editorial, String autor) {
+        this.isbn = isbn;
+        this.titol = titol;
+        this.categoria = categoria;
+        this.preu = preu;
+        this.editorial = editorial;
+        this.autor = autor;
     }
 
     public void setPrestecsByIsbn(Collection<Prestec> prestecsByIsbn) {
