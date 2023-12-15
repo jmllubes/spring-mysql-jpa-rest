@@ -30,6 +30,22 @@ public class LlibreController {
         return repository.findById(isbn)
                 .orElseThrow(() -> new LlibreNotFoundException(isbn));
     }
+    @PutMapping("/llibres/{isbn}")
+    public Llibre replaceLlibre(@RequestBody Llibre newLlibre, @PathVariable String isbn) {
+        return repository.findById(isbn)
+                .map(llibre -> {
+                    llibre.setTitol(newLlibre.getTitol());
+                    llibre.setCategoria(newLlibre.getCategoria());
+                    llibre.setPreu(newLlibre.getPreu());
+                    llibre.setEditorial(newLlibre.getEditorial());
+                    llibre.setAutor(newLlibre.getAutor());
+                    return repository.save(llibre);
+                })
+                .orElseGet(() -> {
+                    newLlibre.setIsbn(isbn);
+                    return repository.save(newLlibre);
+                });
+    }
 
 
 
